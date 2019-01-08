@@ -1,22 +1,36 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, View, Text, ActivityIndicator, Alert } from 'react-native';
+import { TouchableWithoutFeedback, View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Creators as UserActions } from '../store/ducks/user'
+// import { bindActionCreators } from 'redux';
+import { persistor } from '../store';
+import { Creators as UserActions } from '../store/rudux-ducks/user'
 import Styles from '../util/styles';
 
 class User extends Component {
     constructor(props) {
         super(props);
         this.setUser = this.setUser.bind(this);
+        this.cleanUser = this.cleanUser.bind(this);
     }
     
     async setUser() {
        await this.props.userRequest();
+
+    //    await this.props.userRequestSuccess({
+    //         userName: 'teste 22222',
+    //         userAvatar: 'https://avatars0.githubusercontent.com/u/25548201'
+    //     });
     }
 
+    async cleanUser() {
+        await persistor.purge();
+        // await AsyncStorage.removeItem('persist:root');
+     }
+
     render() {
-        if(this.props.loading === true){
+
+
+        if(this.props.isFetching === true){
             return (
                 <View style={Styles.loading}>
                     <ActivityIndicator size="large" color="black" />
@@ -25,20 +39,33 @@ class User extends Component {
         }
 
         return (
-            <TouchableWithoutFeedback onPress={this.setUser}>
-                <View style={Styles.button}>
-                    <Text style={Styles.buttonText}>change user</Text>
-                </View>
-            </TouchableWithoutFeedback>
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableWithoutFeedback onPress={this.setUser}>
+                    <View style={Styles.button}>
+                        <Text style={Styles.buttonText}>change user</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+
+                <TouchableWithoutFeedback onPress={this.cleanUser}>
+                    <View style={[Styles.button, { marginLeft: 10 }]}>
+                        <Text style={Styles.buttonText}>Clean</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         );
     }
 }
 
 const mapStatetoProps = states => ({
-    loading: states.user.loading,
+    isFetching : states.user.isFetching,
+
+    user : states.user,
 });
 
-const mapDispatchToProps = dispatch => 
-    bindActionCreators(UserActions, dispatch);
+
+const mapDispatchToProps = {
+    ...UserActions,
+};
+
 
 export default connect(mapStatetoProps, mapDispatchToProps)(User);
