@@ -10,7 +10,7 @@ const INITIAL_STATE = {
         userName: 'Anderson Costa',
         userAvatar: 'https://avatars0.githubusercontent.com/u/25548201'
     },
-    loading: false,
+    isFetching: false,
     error: null,
 }
 
@@ -18,11 +18,11 @@ export default user = (state = INITIAL_STATE, action) => {
     
     switch(action.type) {
         case Types.USER_REQUEST:
-            return { ...state, loading: true, error: null }
+            return { ...state, isFetching: true, error: null }
         case Types.USER_REQUEST_SUCCESS:
-            return { data: action.payload.user, loading: false, error: null }
+            return { data: action.payload.user, isFetching: false, error: null }
         case Types.USER_REQUEST_FAILURE:
-            return { ...state, loading: false, error: action.payload.error }
+            return { ...state, isFetching: false, error: action.payload.error }
         default:
             return state;
     }
