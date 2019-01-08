@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 
-import reducers from './rudux-ducks';
+import reducers from './redux-ducks';
 import sagas from './sagas'
 
 const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null;
@@ -24,5 +24,6 @@ const store = createAppropriateStore(persistedReducer, applyMiddleware(...middle
 
 const persistor = persistStore(store)
 sagaMiddleware.run(sagas);
+
 
 export { store, persistor };

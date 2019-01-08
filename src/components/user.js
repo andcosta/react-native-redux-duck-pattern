@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import { persistor } from '../store';
-import { Creators as UserActions } from '../store/rudux-ducks/user'
+import { Creators as UserActions } from '../store/redux-ducks/user'
 import Styles from '../util/styles';
 
 class User extends Component {
@@ -15,11 +14,6 @@ class User extends Component {
     
     async setUser() {
        await this.props.userRequest();
-
-    //    await this.props.userRequestSuccess({
-    //         userName: 'teste 22222',
-    //         userAvatar: 'https://avatars0.githubusercontent.com/u/25548201'
-    //     });
     }
 
     async cleanUser() {
